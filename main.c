@@ -1,5 +1,6 @@
 #include "h_files/header.h"
 #include "h_files/commands.h"
+#include "h_files/linked_list.h"
 
 void preturn_display(t_character player, t_character enemy) {
     printf("=== %s ===\n", player.name);
@@ -19,25 +20,26 @@ int check_endgame(t_character player, t_character enemy) {
     return (0);
 }
 
-
 int main() {
     printf("%s\n", "Bonjour!");
 
     /// INITIALISATION
-    t_character player = {"Bobby", 50, 10, 1};
-    t_character *enemy = malloc(sizeof(t_character));
-    
-    // {"Villain1", 50, 10, 1};
-    t_character enemy2 = {"Villain2", 50, 10, 1};
-    t_character enemy3 = {"Villain3", 50, 10, 1};
+    t_character *player = malloc(sizeof(t_character));
+    player->name = "Bobby";
+    player->atk = 10;
+    player->hp = 50;
+    player->is_alive = 1;
+    player->nb = 0;
 
-    t_node E1 = { enemy, NULL };
-    t_node E1 = { enemy, NULL };
-    t_node E1 = { enemy, NULL };
+    t_node *list = create_enemy_list(5);
 
+    display_list(list);
 
+    add_node(list, 10);
+    add_node(list, 12);
+    add_node(list, 15);
 
-
+    display_list(list);
 
     int game_over = 0;
 
@@ -45,26 +47,28 @@ int main() {
 
     srand(time(NULL));
 
+    t_character *enemy = list->enemy;
+
     while (strcmp(user_input, "exit\n") != 0 && game_over != 1) {
 
-        preturn_display(player, enemy);
+        preturn_display(*player, *enemy);
 
         // TOUR DU JOUEUR
         if (game_over != 1) {
             fgets(user_input, 10, stdin);
         }
 
-        if (player.is_alive == 1)
+        if (player->is_alive == 1)
             call_function(user_input, &player, &enemy);
 
         enemy_turn(&enemy, &player);
 
-        game_over = check_endgame(player, enemy);
+        game_over = check_endgame(*player, *enemy);
 
     }
 
     // CLEAN DES RESSOURCES
-    free(enemy);
+    free(player);
 
     return (0);
 }

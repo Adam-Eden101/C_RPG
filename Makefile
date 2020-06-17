@@ -4,7 +4,8 @@ NAME	=	build/etna_game
 
 SRC		=	main.c	\
 			gameplay/gameplay.c	\
-			gameplay/commands.c
+			gameplay/commands.c	\
+			entities/linked_list.c
 
 OBJ		=	$(SRC:.c=.o)
 
